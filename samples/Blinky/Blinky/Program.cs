@@ -1,10 +1,15 @@
-﻿using System;
+﻿//
+// Copyright (c) .NET Foundation and Contributors
+// See LICENSE file in the project root for full license information.
+//
+
+using System.Device.Gpio;
+using System;
 using System.Threading;
-using Windows.Devices.Gpio;
 
 namespace Blinky
 {
-	public class Program
+    public class Program
     {
         private static GpioController s_GpioController;
         public static void Main()
@@ -20,7 +25,7 @@ namespace Blinky
             //GpioPin led = GpioController.GetDefault().OpenPin(4);
 
             // F429I_DISCO: PG14 is LEDLD4 
-            GpioPin led = GpioController.GetDefault().OpenPin(PinNumber('G', 14));
+            GpioPin led = s_GpioController.OpenPin(PinNumber('G', 14), PinMode.Output);
 
             // NETDUINO 3 Wifi: A10 is LED onboard blue
             // GpioPin led = GpioController.GetDefault().OpenPin(PinNumber('A', 10));
@@ -35,7 +40,7 @@ namespace Blinky
             //GpioPin led = GpioController.GetDefault().OpenPin(PinNumber('B', 7));
 
             // STM32F769I_DISCO: PJ5 is LD2
-            //GpioPin led = s_GpioController.OpenPin(PinNumber('J', 5));
+            //GpioPin led = s_GpioController.OpenPin(PinNumber('J', 5), PinMode.Output);
 
             // STM32L072Z_LRWAN1: PA5 is LD2
             //GpioPin led = GpioController.GetDefault().OpenPin(PinNumber('A', 5));
@@ -49,9 +54,7 @@ namespace Blinky
             // ULX3S FPGA board: for the red D22 LED from the ESP32-WROOM32, GPIO5
             //GpioPin led = GpioController.GetDefault().OpenPin(5);
 
-            led.SetDriveMode(GpioPinDriveMode.Output);
-
-            led.Write(GpioPinValue.Low);
+            led.Write(PinValue.Low);
 
             while (true)
             {
